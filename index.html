@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background-color: #ff0d63;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      #urlInput {
+        height: 40px;
+        width: 750px;
+        border-radius: 20px;
+        text-align: center;
+        font-size: 24px;
+      }
+
+      #pageTitle {
+        color: white;
+        text-align: center;
+        font-size: 65px;
+        font-family: "Helvetica";
+        letter-spacing: 2px;
+      }
+      #enterURL {
+        color: white;
+        text-align: center;
+        font-size: 25px;
+        font-family: "Helvetica";
+        letter-spacing: 2px;
+      }
+
+      #submissionDiv {
+        text-align: center;
+      }
+      .textpanel {
+        position: relative;
+      }
+      .textpanel img {
+        display: block;
+        height: 100%;
+        width: 100%;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+      }
+      .textpanel textarea {
+        position: absolute;
+        top: 40px;
+        left: 40px;
+        right: 40px;
+        bottom: 40px;
+        height: 100%;
+        width: 100%;
+        background-color: rgb(255, 255, 255);
+      }
+    </style>
+  </head>
+  <script src="./jquery.js"></script>
+  <script>
+    function checkImg() {
+      document.getElementById("loadingParagraph").innerHTML = "loading";
+      var url = document.getElementById("urlInput").value;
+      $(document).ready(function () {
+        $("button").click(function () {
+          $.get(
+            "https://api.scraperapi.com?api_key=e20faa837d473dedf9b6406a843b87ef&url=" +
+              url,
+            function (data, status) {
+              if (status != 404) {
+                var str = String(data).toLowerCase();
+                var el = document.createElement("html");
+                el.innerHTML = str;
+                el = el.getElementsByTagName("img");
+                console.log(el);
+                for (let item of el) {
+                  document.getElementById("loadingParagraph").innerHTML =
+                    "scanned";
+                  if (item.alt == null || item.alt == "") {
+                    var message =
+                      "The image with the source: " +
+                      item.src +
+                      " has no alt text :(. Please go back to your code, and add alt text to make your website more accessible";
+                    var btn = document.createElement("p");
+                    btn.innerHTML = message;
+                    document.body.appendChild(btn);
+                  }
+                }
+              } else {
+                console.log(404);
+              }
+            }
+          );
+        });
+      });
+    }
+  </script>
+  <body>
+    <b>
+      <br />
+      <p id="pageTitle">Alt-Text Checker</p>
+      <br />
+      <p id="enterURL">Enter URL</p>
+      <br />
+    </b>
+    <div id="submissionDiv">
+      <input type="text" id="urlInput" placeholder="https://example.com" />
+      <button onclick="checkImg()">Submit</button>
+    </div>
+    <div class="textpanel">
+      <img src="assets/backgroundImage.png" />
+      <textarea>some text area text...</textarea>
+    </div>
+    <p id="loadingParagraph"></p>
+  </body>
+</html>
