@@ -57,14 +57,21 @@
         left: 40px;
         right: 40px;
         bottom: 40px;
-        height: 100%;
-        width: 100%;
+        height: 800px;
+        width: 1320px;
         background-color: rgb(255, 255, 255);
       }
     </style>
   </head>
   <script src="./jquery.js"></script>
   <script>
+    document.getElementsByClassName("textpanel").style.width =
+      screen.width - 20;
+    document.getElementsByClassName("textpanel").style.height =
+      screen.height - 20;
+
+    document.getElementById("textAreaFormatting").value = "hi";
+
     function checkImg() {
       document.getElementById("loadingParagraph").innerHTML = "loading";
       var url = document.getElementById("urlInput").value;
@@ -114,9 +121,10 @@
       <input type="text" id="urlInput" placeholder="https://example.com" />
       <button onclick="checkImg()">Submit</button>
     </div>
+    <br />
     <div class="textpanel">
       <img src="assets/backgroundImage.png" />
-      <textarea>some text area text...</textarea>
+      <textarea id="textAreaFormatting">some text area text...</textarea>
     </div>
     <p id="loadingParagraph"></p>
   </body>
